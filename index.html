@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Web Log</title>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.js"
+      integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+      crossorigin="anonymous">
+    </script>
+  </head>
+  <body>
+    <h1>Web Log</h1>
+    <form class="urlForm">
+      <input type="url" placeholder="enter a url"><br>
+      <input type="submit" value="Submit Url">
+    </form>
+    <form class="jobIdForm">
+      <input type="number" placeholder="Enter a job id" min="1"> <br>
+      <input type="submit" value="Look up job">
+    </form>
+    <div>
+      <button class="refresh">Refresh</button>
+      <div class="jobIds">
+      </div>
+    </div>
+    <script>
+    $(document).ready(function() {
+      $('.urlForm').on('submit', function(e) {
+        e.preventDefault();
+        submitUrlHandler($(e.target.elements[0]).val());
+      });
+      $('.jobIdForm').on('submit', function(e) {
+        e.preventDefault();
+        submitJobIdHandler($(e.target.elements[0]).val());
+      })
+      $('.refresh').on('click', function(e) {
+        e.preventDefault();
+        getJobIds();
+      });
+
+      var submitUrlHandler = function(url) {
+        console.log('url', url);
+        $.ajax({
+          data: {url: url},
+          type: 'POST',
+          url: '/url',
+          success: function(response) {
+            console.log('submitUrlHandler success', response);
+            getJobIds();
+          },
+          error: function(e) {
+            console.error('submitUrlHandler error', e);
+          }
+        });
+      };
+      var submitJobIdHandler = function(jobId) {
+        console.log('jobId', jobId);
+        $.ajax({
+          data: {jobId: jobId},
+          type: 'POST',
+          url: '/id',
+          success: function(response) {
+            console.log('submitJobIdHandler success', response);
+          },
+          error: function(e) {
+            console.error('submitJobIdHandler error', e);
+          }
+        });
+      };
+      var getJobIds = function() {
+        $.ajax({
+          type: 'GET',
+          url: '/ids',
+          success: function(data) {
+            console.log('getJobIds success', data);
+            renderJobIds(data.jobIds);
+          },
+          error: function(e) {
+            console.error('getJobIds error', e);
+          }
+        });
+      };
+      var renderJobIds = function(jobIds) {
+        $('.jobIds').empty();
+        jobIds.reverse().forEach(renderJobId);
+      };
+      var renderJobId = function(jobId) {
+        $jobId = '<div>' + jobId + '\n';
+        $('.jobIds').append($jobId);
+      }
+
+      //Gets all of the job ids on start
+      getJobIds();
+      //test
+      renderJobIds(['1', '2', '3']);
+      renderJobIds(['4', '5', '6']);
+    });
+    </script>
+  </body>
+</html>
