@@ -16,7 +16,7 @@
       <input type="submit" value="Submit Url">
     </form>
     <form class="jobIdForm">
-      <input type="number" placeholder="Enter a job id" min="1"> <br>
+      <input type="number" placeholder="Enter a job id" min="0"> <br>
       <input type="submit" value="Look up job">
     </form>
     <div>
@@ -62,6 +62,7 @@
           url: '/id',
           success: function(response) {
             console.log('submitJobIdHandler success', response);
+            window.location = response;
           },
           error: function(e) {
             console.error('submitJobIdHandler error', e);
@@ -74,19 +75,19 @@
           url: '/ids',
           success: function(data) {
             console.log('getJobIds success', data);
-            renderJobIds(data.jobIds);
+            renderJobIds(data.jobs);
           },
           error: function(e) {
             console.error('getJobIds error', e);
           }
         });
       };
-      var renderJobIds = function(jobIds) {
+      var renderJobIds = function(jobs) {
         $('.jobIds').empty();
-        jobIds.reverse().forEach(renderJobId);
+        jobs.reverse().forEach(renderJobId);
       };
-      var renderJobId = function(jobId) {
-        $jobId = '<div>' + jobId + '\n';
+      var renderJobId = function(job) {
+        $jobId = '<div>' + job.jobId + '\n';
         $('.jobIds').append($jobId);
       }
 

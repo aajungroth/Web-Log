@@ -5,6 +5,7 @@ const routes = require('./routes.js');
 
 const port = 8000;
 
+app.use(express.static('public'));
 config.init(app);
 routes.init(app);
 
