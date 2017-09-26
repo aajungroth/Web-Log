@@ -35,7 +35,7 @@ exports.init = function(app) {
   app.post('/id', function(req, res) {
     console.log('/id req.body', req.body);
     Html.getOne(req.body.jobId, function(err, result) {
-      console.log('result', result);
+      //console.log('result', result);
       if (err) {
         res.status(520)
         console.error(err);
@@ -51,8 +51,10 @@ exports.init = function(app) {
         //res.redirect('loading.html');
         //res.send(path.join(__dirname + '/../loading.html'));
       } else {
+        //grab html
         res.status(201);
-        res.send('Id received!');
+        //res.send('Id received!');
+        res.send(result.html);
       }
     });
   });

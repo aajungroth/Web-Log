@@ -62,7 +62,11 @@
           url: '/id',
           success: function(response) {
             console.log('submitJobIdHandler success', response);
-            window.location = response;
+            if (response === 'notFound.html' || response === 'loading.html') {
+              window.location = response;
+            } else {
+              $(document.documentElement).html(response);
+            }
           },
           error: function(e) {
             console.error('submitJobIdHandler error', e);

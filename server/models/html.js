@@ -1,7 +1,7 @@
 var db = require('../db_config.js').mongoose;
 var autoIncrement = require('mongoose-auto-increment');
 var agenda = require('../worker/agenda.js');
-console.log('agenda', agenda);
+//console.log('agenda', agenda);
 
 autoIncrement.initialize(db);
 
@@ -22,11 +22,15 @@ exports.create = function(url, cb) {
     var htmlInfo = {url: url};
     var html = new Html(htmlInfo);
 
-    html.save(function(err) {
+    html.save(function(err, result) {
       if (err) {
         cb(err);
       } else {
-        agenda.now('get html', {url: url});
+        //get job id
+        console.log('Html result', result);
+        var jobId = result.jobId;
+
+        agenda.now('get html', {url: url, jobId: jobId});
         cb();
       }
     });
@@ -48,4 +52,8 @@ exports.getOne = function(jobId, cb) {
   query.exec(function(err, result) {
     cb(err, result);
   });
+};
+
+exports.updateOne = function(query, newData, cb) {
+  Html.findOneAndUpdate(query, newData, cb);
 };
