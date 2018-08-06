@@ -1,3 +1,4 @@
+require('dotenv').config({path: './../.env'});
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 

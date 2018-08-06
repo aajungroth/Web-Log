@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run mongod && npm run nodemon",
+    "mongod": "mongod",
+    "nodemon": "nodemon server/server.js",
+    "test": "npm run unit && npm run integration",
+    "unit": "mocha test/unit.js",
+    "integration": "mocha test/integration.js"
   },
   "keywords": [],
   "author": "",
@@ -13,10 +18,16 @@
     "agenda": "^1.0.0",
     "bluebird": "^3.5.0",
     "body-parser": "^1.18.1",
+    "dotenv": "^4.0.0",
     "express": "^4.15.4",
     "mongoose": "^4.11.12",
     "mongoose-auto-increment": "^5.0.1",
     "morgan": "^1.8.2",
     "request": "^2.82.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^3.5.3",
+    "supertest": "^3.0.0"
   }
 }
